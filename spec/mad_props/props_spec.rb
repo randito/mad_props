@@ -27,6 +27,14 @@ describe MadProps::Props do
       end
     end
 
+    describe '#properties' do
+      it 'should list the properties' do
+        [:name, :age, :cool, :null, :pi].each do |key|
+          subject.properties.should include(key)
+        end
+      end
+    end
+
     describe 'setters' do
       it 'define setters' do
         hash.keys.each do |key|
@@ -45,9 +53,13 @@ describe MadProps::Props do
 
     context 'with invalid arguments' do
       let(:invalid_args) { [1, false, [1,2], :a, Object, Object.new] }
+      let(:reserved_keys) { %w(tap extend clone dup) }
 
       it 'should raise exception' do
         invalid_args.each do |arg|
+          expect { MadProps::Props.new(arg) }.to raise_error ArgumentError
+        end
+        reserved_keys.each do |arg|
           expect { MadProps::Props.new(arg) }.to raise_error ArgumentError
         end
       end

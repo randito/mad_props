@@ -2,6 +2,7 @@ class MadProps::Props
 
   def initialize(hash={})
     raise ArgumentError.new 'not a hash' unless hash.is_a?(Hash)
+    @properties = []
     hash.each do |key,value|
       add_property(key, value)
     end
@@ -13,6 +14,11 @@ class MadProps::Props
     self.class.define_getter(key)
     self.class.define_setter(key, value)
     instance_variable_set("@#{key}", value)
+    @properties << key.to_sym
+  end
+
+  def properties
+    @properties.dup
   end
 
   private
@@ -24,7 +30,7 @@ class MadProps::Props
   def self.invalid_key_chars
     @invalid_key_chars ||= %w{ ( ) ; = \{ \} : & - }
   end
-  
+
   def self.validate_key!(key)
     invalid_key_chars.each do |invalid_char|
       raise ArgumentError.new("Invalid key: #{key}") if key.to_s.index(invalid_char)
