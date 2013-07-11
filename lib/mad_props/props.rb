@@ -17,9 +17,19 @@ class MadProps::Props
 
   private
 
+  def self.reserved_keys
+    @reserved_keys ||= Object.new.methods.map(&:to_s)
+  end
+
+  def self.invalid_key_chars
+    @invalid_key_chars ||= %w{ ( ) ; = \{ \} : & - }
+  end
+  
   def self.validate_key!(key)
-    # can't include reserve names
-    # can't use (), {}, = or .
+    invalid_key_chars.each do |invalid_char|
+      raise ArgumentError.new("Invalid key: #{key}") if key.to_s.index(invalid_char)
+    end
+    raise ArgumentError.new("Reserved key: #{key}") if reserved_keys.include?(key.to_s)
   end
 
   def self.validate_value!(value)
@@ -39,6 +49,5 @@ class MadProps::Props
     end
 
   end
-
 
 end

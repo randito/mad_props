@@ -31,19 +31,19 @@ MadProps objects can be initialized with a hash and support simple lookups.
 ## Usage
 
     randy = MadProps::Props.new {
-        _key: 'dad',
+        key: 'geek:dad',
         name: 'Randy',
         town: 'Austin',
         is:   [ 'charming', 'good looking']
     }
 
     wyatt = MadProps.new {
-        _key: 'son',
-        _base, 'randy',
+        key: 'geek:son',
+        proto, 'geek:dad',
         name: 'Wyatt'
     }
 
-    # wyatt inherits all properties from his _base property except the ones he overrides
+    # wyatt inherits all properties from his proto property except the ones he overrides
     puts "#{wyatt.name} lives in #{wyatt.town}"
     # => Wyatt lives in Austin
 
@@ -55,9 +55,9 @@ MadProps objects can be initialized with a hash and support simple lookups.
 The _key_ property identifies a MadProp object.  If and when caching
 is introduced, it will use this unique identifier.
 
-The _base_ property identifies the parent to inherit from. When getting
+The _proto_ property identifies the parent to inherit from. When getting
 a property, we look at the object to see if it has that property.  If not,
-we use the _base_ pointer to see if the parent has it. We do this recursively
+we use the _proto_ pointer to see if the parent has it. We do this recursively
 up the inheritance tree.
 
 We setting a property, we simply set the property on that object.  Now,

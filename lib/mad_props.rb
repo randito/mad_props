@@ -3,9 +3,8 @@ require "mad_props/props"
 
 module MadProps
 
-  BASE_PROP   = '_base'
-  KEY_PROP    = '_key'
-  SCHEMA_PROP = '_schema'
-  TYPE_PROP   = '_type'
+  BASE_PROP   = 'proto'
+  KEY_PROP    = 'key'
+  SCHEMA_PROP = 'schema'
 
 end
