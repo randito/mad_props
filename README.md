@@ -12,7 +12,8 @@ essentially a property list, but with a twist.  They contain a link to a
 from it's parent up the inheritance tree.
 
 That's it.  Of course, being geeks we will overly comlicate it with caching,
-recursion and YML files.
+recursion and YML files.  And maybe even some NoSQL to make it especially
+buzzword compliant.
 
 ### Properties
 
