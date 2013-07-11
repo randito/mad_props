@@ -12,8 +12,9 @@ describe MadProps::Props do
       { name: 'monkey', age: 1, cool: false, null: 'and void', pi: 'yummy' }
     end
 
+    subject { MadProps::Props.new(hash) }
+
     describe 'getters' do
-      subject { MadProps::Props.new(hash) }
       it 'define getters' do
         hash.keys.each do |key|
           subject.respond_to?(key).should be_true
@@ -64,6 +65,25 @@ describe MadProps::Props do
 
   end
 
+  # --------------------
+
+  context 'no args' do
+
+    subject { MadProps::Props.new }
+
+    describe '#add_property' do
+      before(:each) { subject.add_property(:name, 'randy') }
+      it 'define getter' do
+        subject.respond_to?(:name).should be_true
+        subject.name.should == 'randy'
+      end
+      it 'define setter' do
+        subject.name = 'monkey'
+        subject.name.should == 'monkey'
+      end
+    end
+
+  end
 
   # describe 'with parent' do
   #   it 'get inherited value'

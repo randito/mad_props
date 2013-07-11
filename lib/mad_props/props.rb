@@ -3,12 +3,16 @@ class MadProps::Props
   def initialize(hash={})
     raise ArgumentError.new 'not a hash' unless hash.is_a?(Hash)
     hash.each do |key,value|
-      self.class.validate_key!(key)
-      self.class.validate_value!(value)
-      self.class.define_getter(key)
-      self.class.define_setter(key, value)
-      instance_variable_set("@#{key}", value)
+      add_property(key, value)
     end
+  end
+
+  def add_property(key, value)
+    self.class.validate_key!(key)
+    self.class.validate_value!(value)
+    self.class.define_getter(key)
+    self.class.define_setter(key, value)
+    instance_variable_set("@#{key}", value)
   end
 
   private
