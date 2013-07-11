@@ -8,7 +8,7 @@ describe MadProps::Props do
       { name: 'randy', age: 5, cool: true, null: nil, pi: 3.14 }
     end
     let(:updated_hash) do
-      # fyi, we are changing the types of some of the values.
+      # NOTE: we are changing the types of some of the values.  schema?
       { name: 'monkey', age: 1, cool: false, null: 'and void', pi: 'yummy' }
     end
 
@@ -44,8 +44,10 @@ describe MadProps::Props do
     # --------------------
 
     context 'with invalid arguments' do
+      let(:invalid_args) { [1, false, [1,2], :a, Object, Object.new] }
+
       it 'should raise exception' do
-        [1, false, [1,2], :a, Object, Object.new].each do |arg|
+        invalid_args.each do |arg|
           expect { MadProps::Props.new(arg) }.to raise_error ArgumentError
         end
       end
