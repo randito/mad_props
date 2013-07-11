@@ -1,4 +1,5 @@
 require "mad_props/version"
+require "mad_props/props"
 
 module MadProps
 

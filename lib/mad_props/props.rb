@@ -1,0 +1,3 @@
+class MadProps::Props
+
+end
