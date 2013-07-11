@@ -26,6 +26,14 @@ describe MadProps::Props do
       end
     end
 
+    context 'with invalid arguments' do
+      it 'should raise exception' do
+        [1, false, [1,2], :a, Object, Object.new].each do |arg|
+          expect { MadProps::Props.new(arg) }.to raise_error ArgumentError
+        end
+      end
+    end
+
     describe 'setters' do
       it 'define setters'
       it 'implement setters'
