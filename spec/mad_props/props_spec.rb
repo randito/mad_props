@@ -26,6 +26,22 @@ describe MadProps::Props do
       end
     end
 
+    describe 'setters' do
+      it 'define setters' do
+        hash.keys.each do |key|
+          subject.respond_to?(key.to_s+"=").should be_true
+        end
+      end
+      it 'implement setters' do
+        updated_hash.each do |key, new_value|
+          subject.send(key.to_s+"=", new_value)
+          subject.send(key).should == new_value
+        end
+      end
+    end
+
+    # --------------------
+
     context 'with invalid arguments' do
       it 'should raise exception' do
         [1, false, [1,2], :a, Object, Object.new].each do |arg|
@@ -34,14 +50,13 @@ describe MadProps::Props do
       end
     end
 
-    describe 'setters' do
-      it 'define setters'
-      it 'implement setters'
-    end
+    # --------------------
 
     context 'with invalid property value types' do
       it 'raise an exception'
     end
+
+    # --------------------
 
     context 'with invalid property names' do
       it 'should raise an exception'

@@ -29,8 +29,8 @@ class MadProps::Props
   end
 
   def self.define_setter(key, value)
-    define_method("#{key}=") do
-      validate_value!(value)
+    define_method("#{key}=") do |value|
+      self.class.validate_value!(value)
       instance_variable_set("@#{key}", value)
     end
 
