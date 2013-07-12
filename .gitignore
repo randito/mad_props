@@ -4,4 +4,5 @@ pkg/
 coverage
 doc/
 spec/reports
+tags
 tmp
