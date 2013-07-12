@@ -16,6 +16,10 @@ class MadProps::Props
     @hash[key] = value
   end
 
+  def remove_property(key)
+    @hash.delete(key)
+  end
+
   def properties
     @hash.keys.map(&:to_sym)
   end

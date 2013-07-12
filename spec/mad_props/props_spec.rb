@@ -27,14 +27,6 @@ describe MadProps::Props do
       end
     end
 
-    describe '#properties' do
-      it 'should list the properties' do
-        [:name, :age, :cool, :null, :pi].each do |key|
-          subject.properties.should include(key)
-        end
-      end
-    end
-
     describe 'setters' do
       it 'define setters' do
         hash.keys.each do |key|
@@ -46,6 +38,22 @@ describe MadProps::Props do
           subject.send(key.to_s+"=", new_value)
           subject.send(key).should == new_value
         end
+      end
+    end
+
+    describe '#properties' do
+      it 'should list the properties' do
+        [:name, :age, :cool, :null, :pi].each do |key|
+          subject.properties.should include(key)
+        end
+      end
+    end
+
+    describe '#remove_property' do
+      it 'remove the property' do
+        subject.properties.should include(:cool)
+        subject.remove_property(:cool)
+        subject.properties.should_not include(:cool)
       end
     end
 
@@ -68,13 +76,13 @@ describe MadProps::Props do
     # --------------------
 
     context 'with invalid property value types' do
-      it 'raise an exception'
+      pending 'raise an exception'
     end
 
     # --------------------
 
     context 'with invalid property names' do
-      it 'should raise an exception'
+      pending 'should raise an exception'
     end
 
   end
