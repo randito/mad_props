@@ -1,59 +1,48 @@
+require 'mad_props/validate'
+require 'active_support/core_ext/hash/indifferent_access'
+
 class MadProps::Props
+
+  extend Validate
 
   def initialize(hash={})
     raise ArgumentError.new 'not a hash' unless hash.is_a?(Hash)
-    @properties = []
     hash.each do |key,value|
-      add_property(key, value)
+      self.class.validate!(key, value)
     end
+    @hash = hash.with_indifferent_access
   end
 
   def add_property(key, value)
-    self.class.validate_key!(key)
-    self.class.validate_value!(value)
-    self.class.define_getter(key)
-    self.class.define_setter(key, value)
-    instance_variable_set("@#{key}", value)
-    @properties << key.to_sym
+    self.class.validate!(key, value)
+    @hash[key] = value
   end
 
   def properties
-    @properties.dup
+    @hash.keys.map(&:to_sym)
+  end
+
+  def respond_to?(method)
+    key = method.to_s.sub(/=/,'')
+    return true if @hash.has_key?(key)
+    super(method)
   end
 
   private
 
-  def self.reserved_keys
-    @reserved_keys ||= Object.new.methods.map(&:to_s)
-  end
-
-  def self.invalid_key_chars
-    @invalid_key_chars ||= %w{ ( ) ; = \{ \} : & - }
-  end
-
-  def self.validate_key!(key)
-    invalid_key_chars.each do |invalid_char|
-      raise ArgumentError.new("Invalid key: #{key}") if key.to_s.index(invalid_char)
+  def method_missing(method, *args)
+    m = method.to_s
+    key = m.sub(/=/,'')
+    if @hash.has_key?(key)
+      if m.index('=')
+        raise ArgumentError.new("Only one argument") if args.size != 1
+        @hash[key] = args.first
+      else
+        @hash[key]
+      end
+    else
+      super(method, args)
     end
-    raise ArgumentError.new("Reserved key: #{key}") if reserved_keys.include?(key.to_s)
-  end
-
-  def self.validate_value!(value)
-  end
-
-  def self.define_getter(key)
-    define_method(key) do
-      instance_variable_get("@#{key}")
-      # NOTE:  This is where the recursive lookup will occur
-    end
-  end
-
-  def self.define_setter(key, value)
-    define_method("#{key}=") do |value|
-      self.class.validate_value!(value)
-      instance_variable_set("@#{key}", value)
-    end
-
   end
 
 end
