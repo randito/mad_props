@@ -12,17 +12,17 @@ describe MadProps::Props do
       { name: 'monkey', age: 1, cool: false, null: 'and void', pi: 'yummy' }
     end
 
-    subject { MadProps::Props.new(hash) }
+    let(:props) { MadProps::Props.new(hash) }
 
     describe 'getters' do
       it 'define getters' do
         hash.keys.each do |key|
-          subject.respond_to?(key).should be_true
+          props.respond_to?(key).should be_true
         end
       end
       it 'implement getters' do
         hash.each do |key,value|
-          subject.send(key).should == value
+          props.send(key).should == value
         end
       end
     end
@@ -30,13 +30,13 @@ describe MadProps::Props do
     describe 'setters' do
       it 'define setters' do
         hash.keys.each do |key|
-          subject.respond_to?(key.to_s+"=").should be_true
+          props.respond_to?(key.to_s+"=").should be_true
         end
       end
       it 'implement setters' do
         updated_hash.each do |key, new_value|
-          subject.send(key.to_s+"=", new_value)
-          subject.send(key).should == new_value
+          props.send(key.to_s+"=", new_value)
+          props.send(key).should == new_value
         end
       end
     end
@@ -44,16 +44,16 @@ describe MadProps::Props do
     describe '#properties' do
       it 'should list the properties' do
         [:name, :age, :cool, :null, :pi].each do |key|
-          subject.properties.should include(key)
+          props.properties.should include(key)
         end
       end
     end
 
     describe '#remove_property' do
       it 'remove the property' do
-        subject.properties.should include(:cool)
-        subject.remove_property(:cool)
-        subject.properties.should_not include(:cool)
+        props.properties.should include(:cool)
+        props.remove_property(:cool)
+        props.properties.should_not include(:cool)
       end
     end
 
@@ -91,17 +91,17 @@ describe MadProps::Props do
 
   context 'no args' do
 
-    subject { MadProps::Props.new }
+    let(:props) { MadProps::Props.new }
 
     describe '#add_property' do
-      before(:each) { subject.add_property(:name, 'randy') }
+      before(:each) { props.add_property(:name, 'randy') }
       it 'define getter' do
-        subject.respond_to?(:name).should be_true
-        subject.name.should == 'randy'
+        props.respond_to?(:name).should be_true
+        props.name.should == 'randy'
       end
       it 'define setter' do
-        subject.name = 'monkey'
-        subject.name.should == 'monkey'
+        props.name = 'monkey'
+        props.name.should == 'monkey'
       end
     end
 
